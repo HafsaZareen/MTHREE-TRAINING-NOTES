@@ -1,0 +1,48 @@
+apiVersion: apps/v1  # Specifies the Kubernetes API version for Deployments
+kind: Deployment     # Defines a Deployment resource
+metadata:
+  name: flask-app   # Name of the Deployment
+  namespace: mini-demo  # Deploys inside the 'mini-demo' namespace
+  labels:
+    app: flask-app  # Label used to identify the application
+
+spec:
+  replicas: 2  # Runs 2 instances (Pods) of the Flask app for high availability
+  selector:
+    matchLabels:
+      app: flask-app  # Selects Pods with label `app=flask-app`
+  
+  template:  # Defines the Pod template that will be used for creating Pods
+    metadata:
+      labels:
+        app: flask-app  # Labels assigned to Pods created by this Deployment
+
+    spec:
+      containers:
+      - name: flask-app  # Name of the container running in the Pod
+        image: mini-k8s-demo:latest  # Uses a locally built image for Flask app
+        imagePullPolicy: Never  # Prevents Kubernetes from pulling from a registry, uses local image
+        
+        ports:
+        - containerPort: 5000  # The Flask app listens on port 5000
+          name: http  # Naming the port to reference it in probes and services
+        
+        envFrom:
+        - configMapRef:
+            name: app-config  # Injects environment variables from ConfigMap
+
+        # Liveness probe: Checks if the app is still running, restarts if it fails
+        livenessProbe:
+          httpGet:
+            path: /api/health  # Calls this endpoint to check if the app is alive
+            port: http  # Uses the named port `http`
+          initialDelaySeconds: 10  # Waits 10 seconds before the first check
+          periodSeconds: 30  # Runs every 30 seconds
+        
+        # Readiness probe: Checks if the app is ready to receive traffic
+        readinessProbe:
+          httpGet:
+            path: /api/health  # Calls this endpoint to check if the app is ready
+            port: http  # Uses the named port `http`
+          initialDelaySeconds: 5  # Waits 5 seconds before the first check
+          periodSeconds: 10  # Runs every 10 seconds

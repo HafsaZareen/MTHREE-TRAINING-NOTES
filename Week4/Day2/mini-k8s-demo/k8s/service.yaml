@@ -1,0 +1,19 @@
+apiVersion: v1  # Uses the core Kubernetes API
+kind: Service  # Defines a Service resource
+metadata:
+  name: flask-app  # Name of the Service
+  namespace: mini-demo  # The Service exists inside the 'mini-demo' namespace
+  labels:
+    app: flask-app  # Labels to identify the Service
+
+spec:
+  type: NodePort  # Exposes the app externally on a static port (accessible outside the cluster)
+  # Defines which Pods this Service should route traffic to
+  selector:
+    app: flask-app  # Matches Pods with label `app=flask-app`
+
+  ports:
+  - port: 80           # Port exposed by the Service (users access via this port)
+    targetPort: 5000   # The container’s port where the Flask app is running
+    nodePort: 30080    # Exposes the app on this port on the node (range: 30000-32767)
+    protocol: TCP  # Uses TCP protocol for communication
