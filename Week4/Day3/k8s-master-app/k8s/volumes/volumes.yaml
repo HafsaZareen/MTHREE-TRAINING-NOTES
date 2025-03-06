@@ -1,0 +1,25 @@
+# Instead of using PersistentVolume and PersistentVolumeClaim with hostPath
+# which causes issues in WSL2, we'll use emptyDir volumes.
+# 
+# EmptyDir is like a temporary scratch pad - it's created when a pod is assigned
+# to a node and exists as long as that pod is running on that node.
+# This is perfect for our demo without requiring special host directory mounts.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-files
+  namespace: k8s-demo
+data:
+  hello.txt: |
+    Hello from the Kubernetes volume!
+    This file is loaded from a ConfigMap, not a host mount.
+  
+  info.txt: |
+    This file demonstrates how to use ConfigMaps to provide files to pods.
+    In a real application, you might use PersistentVolumes backed by cloud storage.
+  
+  sample-config.txt: |
+    # Sample Configuration
+    log_level=info
+    max_connections=100
+    timeout=30

@@ -1,0 +1,25 @@
+# ConfigMap: Store non-sensitive configuration data
+# Purpose: Decouple configuration from container images
+# ConfigMaps are like recipe books for your application - they tell the app
+# how it should behave without having to rebuild the container image.
+# This makes your containers more portable and easier to configure.
+apiVersion: v1
+kind: ConfigMap #(referenced in pods to use its data).
+metadata:
+  name: app-config
+  namespace: k8s-demo
+data:
+  # These key-value pairs will be available as environment variables in the pods
+  APP_NAME: "Kubernetes Zero to Hero"
+  APP_VERSION: "1.0.0"
+  ENVIRONMENT: "demo"
+  DATA_PATH: "/data"
+  CONFIG_PATH: "/config"
+  LOG_PATH: "/logs"
+  # You can also store configuration files directly in the ConfigMap
+  app-settings.json: |
+    {
+      "logLevel": "info",
+      "enableMetrics": true,
+      "maxFileSizeMB": 10
+    }

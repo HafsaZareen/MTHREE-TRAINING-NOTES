@@ -1,0 +1,39 @@
+# HorizontalPodAutoscaler: Automatically scale pods based on metrics
+# Purpose: Dynamically adjust number of pods based on CPU/memory usage
+#
+# HPA is like a restaurant manager who adds or removes staff based on
+# how busy the restaurant is. More customers = more staff needed.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: k8s-master-hpa
+  namespace: k8s-demo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: k8s-master-app
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  # If CPU or memory utilization exceeds 50%, new pods are added.
+  #If utilization drops, excess pods are removed.
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 50
+  behavior:
+# Scale-Up Delay: 60s before increasing replicas (prevents frequent unnecessary scaling).
+# Scale-Down Delay: 120s before reducing replicas (avoids premature pod termination).
+    scaleUp:
+      stabilizationWindowSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 120

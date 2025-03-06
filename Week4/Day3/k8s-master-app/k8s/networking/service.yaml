@@ -1,0 +1,36 @@
+# Service: Stable endpoint to access pods
+# Purpose: Provide a stable IP and DNS name to access a set of pods
+#
+# Services are like a restaurant's phone number - customers call one number
+# and get connected to available staff. It doesn't matter which specific
+# employee answers, and employees can change without affecting the phone number.
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-master-app
+  namespace: k8s-demo
+  labels:
+    app: k8s-master
+  annotations:
+    service.beta.kubernetes.io/description: "Exposes the K8s Master App"
+spec:
+  # Type: 
+  # - ClusterIP (default): Internal only
+  # - NodePort: Exposes on Node IP at a static port
+  # - LoadBalancer: Exposes externally using cloud provider's load balancer
+  type: NodePort
+  
+  # Selector determines which pods this service will route traffic to
+  selector:
+    app: k8s-master
+  
+  # Port mappings
+  ports:
+  - name: http
+    port: 80             # Port exposed by the service inside the cluster
+    targetPort: 5000     # Port the container accepts traffic on
+    nodePort: 30080      # Port on the node (range 30000-32767)
+    protocol: TCP
+
+  # Session affinity: Determines if connections from a client go to the same pod
+  sessionAffinity: None

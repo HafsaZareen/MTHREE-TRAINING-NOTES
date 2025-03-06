@@ -1,0 +1,13 @@
+# Namespace: Virtual clusters within a Kubernetes cluster
+# Purpose: Isolate resources, control access, and organize applications
+#
+# In our case, we use a namespace to isolate our application from others in the cluster.
+# This is similar to having separate apartments in a building - each with their own space.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: k8s-demo
+  labels:
+    name: k8s-demo
+    environment: demo
+    app: k8s-master

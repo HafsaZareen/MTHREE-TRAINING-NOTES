@@ -1,0 +1,142 @@
+# Deployment: Declaratively manages a set of pods
+# Purpose: Ensure pods are running and updated according to a desired state
+#
+# Deployments are like restaurant managers who ensure there are always enough
+# chefs (pods) working in the kitchen. If a chef quits or gets sick, the manager
+# hires a new one to maintain the desired staffing level.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-master-app
+  namespace: k8s-demo
+  labels:
+    app: k8s-master
+spec:
+  # Number of identical pod replicas to maintain
+  replicas: 2
+  
+  # Strategy defines how pods should be updated
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1  # Maximum number of pods that can be unavailable during update
+      maxSurge: 1        # Maximum number of pods that can be created over desired number
+  
+  # Selector defines how the Deployment finds which Pods to manage
+  selector:
+    matchLabels:
+      app: k8s-master
+  
+  # Pod template defines what each Pod should look like
+  template:
+    metadata:
+      labels:
+        app: k8s-master
+      annotations:
+        prometheus.io/scrape: "true"  # Tell Prometheus to scrape this pod for metrics
+        prometheus.io/path: "/api/metrics"
+        prometheus.io/port: "5000"
+    spec:
+      # Container specifications
+      containers:
+      - name: k8s-master-app
+        image: k8s-master-app:latest
+        imagePullPolicy: Never  # Use local image (for Minikube)
+        
+        # Ports to expose from the container
+        ports:
+        - containerPort: 5000
+          name: http
+        
+        # Environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: app-config
+        
+        # Environment variables from Secret
+        - secretRef:
+            name: app-secrets
+        
+        # Volume mounts connect the container to volumes
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+          readOnly: false
+        - name: config-volume
+          mountPath: /config
+          readOnly: true
+        - name: logs-volume
+          mountPath: /logs
+          readOnly: false
+        - name: config-files
+          mountPath: /config-files
+          readOnly: true
+        
+        # Resource limits and requests
+        # These help Kubernetes schedule pods efficiently
+        resources:
+          requests:
+            cpu: "100m"     # 0.1 CPU core
+            memory: "128Mi"  # 128 MB of memory
+          limits:
+            cpu: "500m"     # 0.5 CPU core
+            memory: "512Mi"  # 512 MB of memory
+        
+        # Liveness probe checks if the container is alive
+        # If it fails, Kubernetes will restart the container
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        # Readiness probe checks if the container is ready to serve traffic
+        # If it fails, Kubernetes won't send traffic to it
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 3
+        
+        # Lifecycle hooks to perform actions at container startup and shutdown
+        # This allows for graceful handling of container events
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'Container started' > /logs/container.log"]
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'Container stopping' >> /logs/container.log"]
+      
+      # Volumes define storage that can be mounted into containers
+      volumes:
+      # Using emptyDir instead of PersistentVolumeClaim to avoid host mount issues
+      - name: data-volume
+        emptyDir: {}
+      - name: config-volume
+        emptyDir: {}
+      - name: logs-volume
+        emptyDir: {}
+      # ConfigMap volume to provide sample files
+      - name: config-files
+        configMap:
+          name: app-files
+      
+      # Init container to copy sample files to the volumes
+      # This simulates having data in the persistent volumes
+      initContainers:
+      - name: init-volumes
+        image: busybox
+        command: ["/bin/sh", "-c", "cp /config-files/* /data/ && echo 'Volumes initialized' > /logs/init.log"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+        - name: logs-volume
+          mountPath: /logs
+        - name: config-files
+          mountPath: /config-files
