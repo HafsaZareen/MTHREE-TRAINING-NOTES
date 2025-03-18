@@ -1,0 +1,12 @@
+{
+    "python.analysis.typeCheckingMode": "strict",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportDeprecated": "warning"
+    },
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.args": [
+        "--max-line-length=120"
+    ]
+}
