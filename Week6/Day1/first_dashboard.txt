@@ -1,0 +1,122 @@
+## Step 1: Access Grafana
+
+1. Ensure Grafana is running and accessible
+   bash
+   kubectl port-forward svc/grafana -n monitoring 3000:80
+   
+2. Open your web browser and navigate to:
+   http://localhost:3000
+
+3. Log in with the credentials:
+   - Username: admin
+   - Password: admin
+
+## Step 2: Create a New Dashboard
+
+1. Click the "+" icon in the left sidebar
+2. Select "Dashboard" from the dropdown menu
+3. Click "Add a new panel"
+
+## Step 3: Configure Your First Panel (Logs Panel)
+
+1. In the panel editor, select "Loki" as your data source from the dropdown
+2. Enter the following query in the query field:
+   
+   {namespace="sample-app"}
+   
+3. From the visualization options on the right side, select "Logs"
+4. Configure the panel display options:
+   - Set panel title to "Application Logs"
+   - Under Options, enable "Show time"
+   - Set "Sort order" to "Descending" (newest logs first)
+
+5. Click "Apply" in the top-right corner to add this panel to your dashboard
+
+## Step 4: Add a Filtered Error Logs Panel
+
+1. Click the "Add panel" button (+ icon) in the top menu
+2. Select "Add a new panel"
+3. Select "Loki" as your data source
+4. Enter this query to show only error logs:
+   
+   {namespace="sample-app"} |= "ERROR"
+   
+5. Select "Logs" visualization
+6. Configure the panel:
+   - Set title to "Error Logs"
+   - Enable "Show labels"
+   - Set appropriate panel size by dragging its corners
+   
+7. Click "Apply" to add this panel
+
+## Step 5: Add a Metrics Panel
+
+1. Click "Add panel" again
+2. Select "Prometheus" as your data source
+3. Enter the following query:
+   	
+   sum(rate(container_cpu_usage_seconds_total{namespace="sample-app"}[5m])) by (pod)
+   
+4. Select "Time series" visualization
+5. Configure the panel:
+   - Set title to "CPU Usage by Pod"
+   - Under "Legend" settings, enable "Show values"
+   - In Field tab, set Unit to "Percent (0-100)"
+   
+6. Click "Apply" to add this panel
+
+## Step 6: Add a Log Volume Panel
+
+1. Click "Add panel" once more
+2. Select "Loki" as your data source
+3. Change the query type from "Range" to "Instant" in the query editor
+4. Enter the following query:
+   
+   sum(count_over_time({namespace="sample-app"}[5m])) by (pod_name)
+   
+5. Select "Time series" visualization
+6. Configure the panel:
+   - Set title to "Log Volume by Pod"
+   - Adjust visualization settings as needed
+   
+7. Click "Apply" to add this panel
+
+## Step 7: Arrange and Resize Panels
+
+1. Drag panels to reposition them on the dashboard
+2. Resize panels by dragging their corners
+3. Create an intuitive layout with related metrics grouped together
+
+## Step 8: Configure Dashboard Settings
+
+1. Click the gear icon ⚙️ in the top-right to access dashboard settings
+2. Under "General":
+   - Name your dashboard "Kubernetes Application Monitoring"
+   - Add a description if desired
+   - Add tags like "kubernetes" and "application"
+   
+3. Under "Time options":
+   - Set the default time range to "Last 15 minutes"
+   - Set refresh rate to "5s" for real-time monitoring
+
+4. Click "Save" to apply settings
+
+## Step 9: Save Your Dashboard
+
+1. Click the save icon 💾 in the top-right corner
+2. Provide a meaningful name for your dashboard
+3. Add a description (optional)
+4. Click "Save"
+
+## Step 10: Set Up Dashboard Refresh
+
+1. In the top-right of your dashboard, locate the refresh interval dropdown
+2. Set it to "5s" for real-time updates or choose another interval as needed
+
+Your dashboard is now created and will automatically update according to your refresh settings. You can share this dashboard with your team or continue to 
+
+To create more sophisticated dashboards, you can also:
+- Add template variables to make the dashboard dynamic
+- Set up alerts based on thresholds
+- Add annotations to mark significant events
+- Create different rows to organize panels by category
