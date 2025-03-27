@@ -8,5 +8,6 @@
     "python.linting.enabled": true,
     "python.linting.args": [
         "--max-line-length=120"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
