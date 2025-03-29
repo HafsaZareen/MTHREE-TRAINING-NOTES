@@ -1,9 +1,19 @@
 # Ignore Python virtual environments
 venv/
 .env/
+env/
 *.pyc
 __pycache__/
-Week5/Day1/restapi/lib/
-Week5/Day1/restapi/lib/python3.12/
-Week6/Day1/Python_practice/dummy/
+*.pyo
+*.pyd
+*.sqlite3
+
+# Ignore virtualenv folders anywhere
+**/venv/
+**/env/
+
+# Ignore Qodo related file
 .qodo
+
+# Ignore dummy folders used for practice
+Week6/Day1/Python_practice/dummy/
