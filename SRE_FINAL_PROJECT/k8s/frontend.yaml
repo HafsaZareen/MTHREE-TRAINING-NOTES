@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9113"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: nginx
+        image: ipc-nexus-frontend:latest
+        ports:
+        - containerPort: 80
+          name: http
+      - name: nginx-exporter
+        image: nginx/nginx-prometheus-exporter:latest
+        args:
+        - "-nginx.scrape-uri=http://localhost:80/stub_status"
+        ports:
+        - containerPort: 9113
+          name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http
+  - port: 9113
+    targetPort: 9113
+    name: metrics
+  type: NodePort

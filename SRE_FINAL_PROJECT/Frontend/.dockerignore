@@ -1,0 +1,23 @@
+# Node modules (installed in Docker build)
+node_modules/
+
+# Build output (generated during build)
+dist/
+
+# Git and IDE files
+.git
+.gitignore
+.vscode/
+.idea/
+
+# Logs and temp files
+*.log
+npm-debug.log
+
+# Local config and testing
+.env
+.env.local
+.env.development
+.env.production
+*.tsbuildinfo
+coverage/

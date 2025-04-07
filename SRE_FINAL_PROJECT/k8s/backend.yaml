@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: backend
+        image: ipc-nexus-backend:latest
+        imagePullPolicy: Never
+        command: ["gunicorn", "--workers", "1", "--timeout", "300", "--bind", "0.0.0.0:5000", "--log-level", "info", "app:app"]
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /nlp/test
+            port: 5000
+          initialDelaySeconds: 120  # More time for startup
+          timeoutSeconds: 5         # Longer timeout
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /nlp/test
+            port: 5000
+          initialDelaySeconds: 90   # More time before checking
+          timeoutSeconds: 5         # Longer timeout
+          periodSeconds: 5
+        env:
+        - name: DB_PATH
+          value: /app/Database/law_enforcement.db
+        - name: UPLOAD_FOLDER
+          value: /app/Uploads/Evidence
+        volumeMounts:
+        - name: db-storage
+          mountPath: /app/Database
+        - name: uploads-storage
+          mountPath: /app/Uploads/Evidence
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          claimName: db-pvc
+      - name: uploads-storage
+        persistentVolumeClaim:
+          claimName: uploads-pvc

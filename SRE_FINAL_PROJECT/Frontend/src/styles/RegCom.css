@@ -1,0 +1,46 @@
+.bg-police {
+  background: linear-gradient(to right, #001f3f, #005f8f, #0073cf); /* Professional gradient */
+  min-height: 100vh; /* Ensures the background covers the content */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.card-registration {
+
+  border-radius: 10px;
+}
+
+.card-body {
+  padding: 3rem; /* Adds spaciousness to the form */
+}
+
+.card-body .form-control {
+  height: calc(2.5rem + 2px); /* Makes input fields taller */
+  padding: 0.75rem; /* Adds comfortable spacing inside input fields */
+}
+
+textarea.form-control {
+  height: 10rem; /* Explicit height adjustment for ample space */
+  resize: none;  /* Prevents users from resizing if not desired */
+}
+
+
+.card-registration img {
+  border-radius: 0.25rem;
+}
+.img-fluid {
+  height: 100%; /* Matches the height to the container */
+  object-fit: cover; /* Ensures the image fits the space proportionally */
+  border-radius: 0.25rem; /* Keeps the rounded corners consistent */
+}
+
+
+button.btn-primary {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+button.btn-primary:hover {
+  background-color: #003d80;
+  border-color: #003d80;
+}

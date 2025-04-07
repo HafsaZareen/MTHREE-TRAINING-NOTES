@@ -1,0 +1,14 @@
+services:
+  backend:
+    image: ipc_backend:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Backend/Database:/app/Database
+      - ./Backend/Flask_backend/Uploads:/app/Uploads/Evidence
+  frontend:
+    image: ipc_frontend:latest
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend

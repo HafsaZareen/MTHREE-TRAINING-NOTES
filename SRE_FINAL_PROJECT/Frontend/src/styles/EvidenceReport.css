@@ -1,0 +1,84 @@
+/* Reset default margins and paddings */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  /* Full background styling */
+  .EvidenceReport-bg {
+    background-color: #5C7285;
+    min-height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  /* Container styling */
+  .evidence-container {
+    width: 50%;
+  }
+  
+  /* Card styling */
+  .evidence-card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+  }
+  
+  .evidence-title, .existing-evidence-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #495057;
+  }
+  
+  .submit-button {
+    width: 100%;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+  
+  /* Evidence list styling */
+  .evidence-list {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+  }
+  
+  .evidence-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    color: #495057;
+    padding: 10px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .evidence-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .evidence-item span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c757d;
+  }
+  
+  .evidence-item strong {
+    font-weight: 600;
+    color: #343a40;
+  }
+  

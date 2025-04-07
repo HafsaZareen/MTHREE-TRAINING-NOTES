@@ -1,0 +1,42 @@
+# Virtual environment
+venv/
+
+Database/*.log
+Database/*.bak
+
+
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs and temp files
+*.log
+*.pid
+*.seed
+
+# Git and IDE files
+.git
+.gitignore
+.vscode/
+.idea/
+
+# Testing and local build artifacts
+tests/
+*.egg-info/
+dist/
+build/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Docker files (if not needed in image)
+docker-compose.yml
+docker-compose.override.yml
+
+# NLP/model cache (if you ever use Hugging Face cache)
+~/.cache/
+~/.huggingface/

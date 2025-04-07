@@ -1,0 +1,44 @@
+.background-CaseInfo {
+    background-color: #5C7285; /* Replace with your image URL */
+    background-size:cover;
+    background-position: center;
+    min-height: 100vh; /* Full viewport height */
+  }
+  
+  .case-info-container {
+   /* Align container at top */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items at the top */
+  }
+  
+  .tab-container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+  }
+  
+  .tabs {
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .tab-content {
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .tab-content h3 {
+    color: #495057;
+  }
+  
+  .tab-content p {
+    color: #6c757d;
+  }
+  
