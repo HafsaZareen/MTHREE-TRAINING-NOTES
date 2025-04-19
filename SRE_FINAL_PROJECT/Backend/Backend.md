@@ -1,6 +1,3 @@
-Got it! Here's your **Backend README** with all `**bold formatting**` removed for a cleaner look, while still keeping the structure, emojis, and code blocks:
-
----
 
 ```markdown
 # 🌟 Backend README – IPC Nexus
