@@ -145,7 +145,7 @@ ipc_nexus/
 ---
 
 ## Contact 📧  
-Reach out to the DevOps team at: `hafsazareen064@gmail.com`
+Reach out at: `hafsazareen064@gmail.com`
 ```
 
 ---
