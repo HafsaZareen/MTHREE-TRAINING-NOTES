@@ -1,66 +1,80 @@
-
-
 ```markdown
-# 🌈 Frontend README – IPC Nexus
+# Frontend README 🌈
 
-## 🚀 Project Overview
-
-The frontend of the **IPC Nexus** project delivers a user-friendly interface to interact with backend APIs.  
-Built with **Vite** for fast development, it uses **Nginx** for production serving and is linted with **ESLint** for code quality.
+## Project Overview 🚀  
+The frontend of the `ipc_nexus` project provides a user-friendly interface to interact with backend APIs. Built with **Vite** and served by **Nginx** in production, it is linted with **ESLint** and monitored via **Prometheus**.
 
 ---
 
-## ✅ Prerequisites
+## Prerequisites ✅  
+Ensure you have:
 
-Make sure you have the following installed:
-
-- **Node.js** (v16.x or later)
-- **npm** (v8.x or later)
-- **Docker** (optional, for containerized deployment)
-- **Git** (for version control)
-- A modern web browser (e.g., **Chrome**, **Firefox**)
-
----
-
-## 🛠️ Installation
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone <repository-url>
-   cd ipc_nexus/Frontend
-   ```
-
-2. **Install dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables:**
-
-   - Create a `.env` file in the `Frontend` directory.
-   - Add the following:
-
-     ```env
-     VITE_API_URL=http://localhost:5000/api
-     ```
+- Node.js (v16.x or later)  
+- npm (v8.x or later)  
+- Docker and Minikube for containerized deployment  
+- kubectl for Kubernetes management  
+- Git for version control  
+- A modern web browser (e.g., Chrome, Firefox)
 
 ---
 
-## 🎮 Usage
+## Installation 🛠️  
 
-### 🧪 Start the development server:
+### Clone the repository:
+```bash
+git clone https://github.com/HafsaZareen/MTHREE-TRAINING-NOTES.git
+cd MTHREE-TRAINING-NOTES/SRE_FINAL_PROJECT/Frontend
+```
 
+### Install dependencies:
+```bash
+npm install
+```
+
+### Set up environment variables:
+Create a `.env` file in the `Frontend` directory and add the following:
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+## Usage 🎮  
+
+### Local Development:
 ```bash
 npm run dev
 ```
 
-- Open [http://localhost:5173](http://localhost:5173) in your browser.
+Visit: [http://localhost:5173](http://localhost:5173)
 
 ---
 
-### 🚀 For production:
+### Kubernetes Deployment:
+
+1. Start Minikube:
+```bash
+minikube start
+```
+
+2. Apply frontend deployment and service:
+```bash
+kubectl apply -f ~/ipc_nexus/k8s/frontend.yaml
+kubectl apply -f ~/ipc_nexus/k8s/frontend-service.yaml
+```
+
+3. Forward the frontend service port:
+```bash
+kubectl port-forward service/frontend-service 3001:80
+```
+
+4. Access the frontend:
+Visit [http://localhost:3001](http://localhost:3001)  
+For specific pages like [http://localhost:3001/policeinfo](http://localhost:3001/policeinfo)
+
+---
+
+### Production Build:
 
 ```bash
 npm run build
@@ -68,11 +82,11 @@ docker build -t ipc_nexus_frontend .
 docker run -p 80:80 ipc_nexus_frontend
 ```
 
-- Access the production build at [http://localhost](http://localhost)
+Access the production frontend at: [http://localhost](http://localhost)
 
 ---
 
-## 📂 Folder Structure
+## Folder Structure 📂  
 
 ```
 Frontend/
@@ -90,5 +104,25 @@ Frontend/
 
 ---
 
+## Contributing 🤝  
 
+- Fork the repository  
+- Create a new branch:  
+  ```bash
+  git checkout -b feature/your-feature
+  ```
+- Commit changes:  
+  ```bash
+  git commit -m "Add your feature"
+  ```
+- Push to your branch:  
+  ```bash
+  git push origin feature/your-feature
+  ```
+- Open a Pull Request
 
+---
+
+## Contact 📧  
+Reach out at: `hafsazareen064@gmail.com`
+```
